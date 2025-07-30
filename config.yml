@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-config
+  namespace: myql
+  labels:
+    app: dep
+data:
+   MYSQL_ROOT_PASSWORD: "test@123" # Set the root password
+   MYSQL_DATABASE: "exampledb"
