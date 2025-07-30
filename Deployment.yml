@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydep
+  namespace: myql
+  labels:
+   app: dep
+spec:
+ replicas: 5
+ selector:
+   matchLabels:
+     app: dep
+ template:
+   metadata:
+     labels:
+       app: dep
+   spec:
+      containers:
+        - name: mysqlcon
+          image: mysql:8.0
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+             - name: mysql-persistent-storage
+               mountPath: /var/lib/mysql
+          env:
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                    name: mysql-config
+                    key: MYSQL_DATABASE
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: my-sec
+                  key: MYSQL_PASSWORD
+      volumes:
+        - name: mysql-persistent
+            persisentvolumeclaim:
+               claimName: mysql-claim
+~                                             
